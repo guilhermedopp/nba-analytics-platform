@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from src.database import Base
-from datetime import date
 
 class Team(Base):
     __tablename__ = "dim_teams"
@@ -12,7 +11,6 @@ class Team(Base):
     full_name = Column(String)
     abbreviation = Column(String)
     nickname = Column(String)
-
     city = Column(String)
     state = Column(String)
     year_founded = Column(Integer)
@@ -33,6 +31,7 @@ class Player(Base):
     team_id = Column(Integer, ForeignKey("dim_teams.id"), nullable=True)
     team = relationship("Team", back_populates="players")
     
+    stats = relationship("PlayerStats", back_populates="player")
     history = relationship("PlayerTransaction", back_populates="player")
     
     full_name = Column(String)
@@ -58,14 +57,26 @@ class PlayerTransaction(Base):
     __tablename__ = "fact_transactions"
 
     id = Column(Integer, primary_key=True, index=True)
-    
     player_id = Column(Integer, ForeignKey("dim_players.id"))
-    
     team_id = Column(Integer, ForeignKey("dim_teams.id"))
-    
     date = Column(String)
-    
     description = Column(String) 
 
     player = relationship("Player", back_populates="history")
     team = relationship("Team", back_populates="transactions")
+
+class PlayerStats(Base):
+    __tablename__ = "fact_player_stats"
+
+    id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey("dim_players.id"))
+    
+    season_id = Column(String)
+    
+    gp = Column(Integer)
+    pts = Column(Float)
+    reb = Column(Float)
+    ast = Column(Float)
+    net_rating = Column(Float)
+    
+    player = relationship("Player", back_populates="stats")
