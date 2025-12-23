@@ -6,10 +6,10 @@ from src.database import SessionLocal
 from src.etl.extract_data import extract_teams, extract_players
 from src.etl.enrich_teams import enrich_teams_data
 from src.etl.enrich_players import enrich_players_data
+from src.etl.extract_stats import extract_season_stats
 
 def run_pipeline():
-    print("Iniciando pipeline de dados...")
-    
+    print("Iniciando Pipeline de Extração de Dados")    
     db = SessionLocal()
     try:
         extract_teams(db)
@@ -17,6 +17,9 @@ def run_pipeline():
         
         enrich_teams_data(db)
         enrich_players_data(db)
+        
+        print("\nIniciando Extração de estatísticas...")
+        extract_season_stats(db)
         
         print("\nBanco de dados atualizado.")
         
