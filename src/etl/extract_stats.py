@@ -38,6 +38,8 @@ def extract_season_stats(db: Session):
                         pts=row['PTS'],
                         reb=row['REB'],
                         ast=row['AST'],
+                        stl=row['STL'],
+                        blk=row['BLK'],
                         net_rating=row.get('PLUS_MINUS', 0)
                     )
                     db.add(new_stat)
@@ -48,8 +50,6 @@ def extract_season_stats(db: Session):
         
     except Exception as e:
         print(f"Erro na extração: {e}")
-        if 'data_frames' in locals():
-            print("Colunas disponíveis:", data_frames.columns.tolist())
 
 if __name__ == "__main__":
     db = SessionLocal()
