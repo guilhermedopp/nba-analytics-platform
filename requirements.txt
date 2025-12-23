@@ -1,0 +1,9 @@
+pandas
+numpy
+nba_api
+sqlalchemy
+psycopg2-binary
+streamlit
+plotly
+requests
+python-dotenv
