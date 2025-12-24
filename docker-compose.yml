@@ -1,15 +1,39 @@
 services:
   db:
     image: postgres:15
-    container_name: nba_postgres_db
+    container_name: nba_postgres
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: nba_password
-      POSTGRES_DB: nba_analytics
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nba_stats
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: nba_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_NAME=nba_stats
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./src:/app/src
+    command: >
+      sh -c "python src/pipeline.py && streamlit run src/dashboard/app.py --server.address=0.0.0.0"
 
 volumes:
   postgres_data:
