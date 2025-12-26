@@ -62,7 +62,7 @@ nba-analytics-platform/
 └── README.md
 ```
 # ⚙️ Como Rodar Localmente
-  ## Pré-requisitos
+  **Pré-requisitos**
 * **Python 3.10+**
 * **PostgreSQL instalado e em execução**
 
