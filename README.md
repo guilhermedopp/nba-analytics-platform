@@ -45,21 +45,28 @@ O objetivo foi simular um ambiente real de **Engenharia de Dados**, focando na c
 
 ```text
 nba-analytics-platform/
+├── notebooks/           # Jupyter Notebooks para testes exploratórios
 ├── src/
 │   ├── dashboard/       # Front-end (Streamlit)
 │   │   └── app.py
-│   ├── etl/             # Scripts de Extração e Tratamento
-│   │   ├── enrich_players.py
-│   │   └── extract_stats.py
-│   ├── database.py      # Conexão com o Banco
-│   ├── models.py        # Esquema do Banco (ORM)
-│   └── pipeline.py      # Orquestrador do ETL
-├── .gitignore
+│   ├── etl/             # Pipeline de Engenharia de Dados
+│   │   ├── __init__.py
+│   │   ├── enrich_players.py  # Busca altura, peso e draft
+│   │   ├── enrich_teams.py    # Busca conferência e divisão
+│   │   ├── extract_data.py    # Carga inicial de jogadores/times
+│   │   └── extract_stats.py   # Extração de estatísticas da temporada
+│   ├── database.py      # Configuração da conexão (Engine/Session)
+│   ├── models.py        # Tabelas do Banco (SQLAlchemy)
+│   └── pipeline.py      # Orquestrador principal
+├── .dockerignore        # Arquivos ignorados pelo Docker
+├── .gitignore           # Arquivos ignorados pelo Git
 ├── docker-compose.yml   # Orquestração dos Containers
 ├── Dockerfile           # Configuração da Imagem Python
-├── requirements.txt
+├── init_db.py           # Script de inicialização do Banco
+├── requirements.txt     # Dependências do projeto
 └── README.md
 ```
+
 # ⚙️ Como Rodar Localmente
   ## Pré-requisitos
 * **Docker e Docker Compose Instalados**
